@@ -19,7 +19,11 @@ class BooksController @Inject()(val controllerComponents: ControllerComponents, 
     dataRepository.getBook(bookId) foreach { book =>
       bookToReturn = book
     }
-    Ok(Json.toJson(bookToReturn))
+    if (bookToReturn == null) {
+      BadRequest(Json.toJson(s"Error: book cannot be found"))
+    } else {
+      Ok(Json.toJson(bookToReturn))
+    }
   }
 
   def addBook() : Action[AnyContent] = Action {
