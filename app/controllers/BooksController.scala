@@ -37,7 +37,13 @@ class BooksController @Inject()(val controllerComponents: ControllerComponents, 
       val savedBook: Option[Book] = dataRepository.addBook(bookItem.get)
       Created(Json.toJson(savedBook))
     }
+  }
 
-
+  def deleteBook(bookId: Long): Action[AnyContent] = Action {
+    var bookDeleted: Book = null
+    dataRepository.deleteBook(bookId) foreach { book =>
+      bookDeleted = book
+    }
+    Ok(Json.toJson(bookDeleted))
   }
 }

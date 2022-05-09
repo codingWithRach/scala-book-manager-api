@@ -40,4 +40,10 @@ class BookRepository {
     }
   }
 
+  def deleteBook(bookId: Long): Option[Book] = bookList.collectFirst {
+    case book if book.id == bookId =>
+      bookList.remove(book)
+      book
+    }
+
 }

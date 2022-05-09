@@ -12,4 +12,5 @@ GET     /assets/*file               controllers.Assets.versioned(path="/public",
 GET     /books                      controllers.BooksController.getAll()
 POST    /books                      controllers.BooksController.addBook()
 GET     /books/:bookId              controllers.BooksController.getBook(bookId: Long)
+DELETE  /books/:bookId              controllers.BooksController.deleteBook(bookId: Long)
 
