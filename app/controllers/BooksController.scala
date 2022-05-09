@@ -52,6 +52,10 @@ class BooksController @Inject()(val controllerComponents: ControllerComponents, 
     dataRepository.deleteBook(bookId) foreach { book =>
       bookDeleted = book
     }
-    Ok(Json.toJson(bookDeleted))
+    if (bookDeleted == null) {
+      BadRequest(Json.toJson(s"Error: book cannot be found"))
+    } else {
+      Ok(Json.toJson(bookDeleted))
+    }
   }
 }
