@@ -97,7 +97,7 @@ class BooksControllerSpec extends PlaySpec with GuiceOneAppPerTest with Injectin
   }
 
   it should {
-    "return 404 BAD_REQUEST for adding a single book where the ID already exists" in {
+    "return 400 BAD_REQUEST for adding a single book where the ID already exists" in {
 
       // Here we utilise Mockito for stubbing the request to addBook
       when(mockDataService.addBook(any())) thenReturn None
@@ -129,7 +129,7 @@ class BooksControllerSpec extends PlaySpec with GuiceOneAppPerTest with Injectin
 
   it should {
 
-    "return 400 OK for attempting to delete a book with an invalid ID" in {
+    "return 400 BAD_REQUEST for attempting to delete a book with an invalid ID" in {
 
       // Here we utilise Mockito for stubbing the request to deleteBook
       when(mockDataService.deleteBook(11)) thenReturn noBook
