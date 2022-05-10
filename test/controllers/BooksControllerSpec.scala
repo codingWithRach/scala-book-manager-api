@@ -75,7 +75,7 @@ class BooksControllerSpec extends PlaySpec with GuiceOneAppPerTest with Injectin
 
       status(book) mustBe NOT_FOUND
       contentType(book) mustBe Some("application/json")
-//      contentAsString(book) mustEqual "Book cannot be found"
+      assert(contentAsString(book).contains("Book cannot be found"))
     }
   }
 
@@ -108,6 +108,7 @@ class BooksControllerSpec extends PlaySpec with GuiceOneAppPerTest with Injectin
 
       status(book) mustBe BAD_REQUEST
       contentType(book) mustBe Some("application/json")
+      assert(contentAsString(book).contains(s"Book cannot be added as a book with ID 2 already exists"))
     }
   }
 
@@ -138,6 +139,7 @@ class BooksControllerSpec extends PlaySpec with GuiceOneAppPerTest with Injectin
 
       status(book) mustBe BAD_REQUEST
       contentType(book) mustBe Some("application/json")
+      assert(contentAsString(book).contains("Book cannot be found"))
     }
   }
 }
