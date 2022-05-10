@@ -108,7 +108,7 @@ class BooksControllerSpec extends PlaySpec with GuiceOneAppPerTest with Injectin
 
       status(book) mustBe BAD_REQUEST
       contentType(book) mustBe Some("application/json")
-      assert(contentAsString(book).contains(s"Book cannot be added as a book with that ID already exists"))
+      assert(contentAsString(book).contains("Book cannot be added as a book with that ID already exists"))
     }
   }
 
