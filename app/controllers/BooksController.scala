@@ -40,7 +40,7 @@ class BooksController @Inject()(val controllerComponents: ControllerComponents, 
 
       val savedBook: Option[Book] = dataRepository.addBook(bookItem.get)
       if (savedBook.isEmpty) {
-        BadRequest(Json.toJson(s"Book cannot be added as a book with ID ${bookItem.get.id} already exists"))
+        BadRequest(Json.toJson("Book cannot be added as a book with that ID already exists"))
       } else {
         Created(Json.toJson(savedBook))
       }
