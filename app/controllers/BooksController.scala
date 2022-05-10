@@ -20,7 +20,7 @@ class BooksController @Inject()(val controllerComponents: ControllerComponents, 
       bookToReturn = book
     }
     if (bookToReturn == null) {
-      BadRequest("Error: book cannot be found")
+      NotFound(Json.toJson("Book cannot be found"))
     } else {
       Ok(Json.toJson(bookToReturn))
     }
@@ -40,7 +40,7 @@ class BooksController @Inject()(val controllerComponents: ControllerComponents, 
 
       val savedBook: Option[Book] = dataRepository.addBook(bookItem.get)
       if (savedBook.isEmpty) {
-        BadRequest(s"Error: book cannot be added as a book with ID ${bookItem.get.id} already exists")
+        BadRequest(Json.toJson(s"Error: book cannot be added as a book with ID ${bookItem.get.id} already exists"))
       } else {
         Created(Json.toJson(savedBook))
       }
@@ -53,7 +53,7 @@ class BooksController @Inject()(val controllerComponents: ControllerComponents, 
       bookDeleted = book
     }
     if (bookDeleted == null) {
-      BadRequest("Error: book cannot be found")
+      BadRequest(Json.toJson("Error: book cannot be found"))
     } else {
       Ok(Json.toJson(bookDeleted))
     }

@@ -21,6 +21,7 @@ class BooksControllerSpec extends PlaySpec with GuiceOneAppPerTest with Injectin
     "Brilliant",
     "Childs fiction"
   ))
+  val noBook: Option[Book] = None
 
   "BooksController GET allBooks" should {
 
@@ -65,6 +66,19 @@ class BooksControllerSpec extends PlaySpec with GuiceOneAppPerTest with Injectin
     }
   }
 
+  it should {
+    "return 404 Not Found for an invalid book ID" in {
+      when(mockDataService.getBook(11)) thenReturn noBook
+
+      val controller = new BooksController(stubControllerComponents(), mockDataService)
+      val book = controller.getBook(11).apply(FakeRequest(GET, "/books/11"))
+
+      status(book) mustBe NOT_FOUND
+      contentType(book) mustBe Some("application/json")
+//      contentAsString(book) mustEqual "Book cannot be found"
+    }
+  }
+
   "BooksController POST addBook" should {
 
     "return 200 OK for adding a single book" in {
@@ -82,6 +96,21 @@ class BooksControllerSpec extends PlaySpec with GuiceOneAppPerTest with Injectin
     }
   }
 
+  it should {
+    "return 404 BAD_REQUEST for adding a single book where the ID already exists" in {
+
+      // Here we utilise Mockito for stubbing the request to addBook
+      when(mockDataService.addBook(any())) thenReturn None
+
+      val controller = new BooksController(stubControllerComponents(), mockDataService)
+      val book = controller.addBook().apply(
+        FakeRequest(POST, "/books").withJsonBody(Json.toJson(sampleBook)))
+
+      status(book) mustBe BAD_REQUEST
+      contentType(book) mustBe Some("application/json")
+    }
+  }
+
   "BooksController DELETE bookById" should {
 
     "return 200 OK for deleting a single book" in {
@@ -93,6 +122,21 @@ class BooksControllerSpec extends PlaySpec with GuiceOneAppPerTest with Injectin
       val book = controller.deleteBook(1).apply(FakeRequest(DELETE, "/books/1"))
 
       status(book) mustBe OK
+      contentType(book) mustBe Some("application/json")
+    }
+  }
+
+  it should {
+
+    "return 400 OK for attempting to delete a book with an invalid ID" in {
+
+      // Here we utilise Mockito for stubbing the request to deleteBook
+      when(mockDataService.deleteBook(11)) thenReturn noBook
+
+      val controller = new BooksController(stubControllerComponents(), mockDataService)
+      val book = controller.deleteBook(11).apply(FakeRequest(DELETE, "/books/11"))
+
+      status(book) mustBe BAD_REQUEST
       contentType(book) mustBe Some("application/json")
     }
   }
